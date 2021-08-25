@@ -41,13 +41,13 @@ def update_repo(name):
             proc = run(['git', 'pull'], cwd=path.join(path.dirname(path.realpath(__file__))), stdout=PIPE, stderr=PIPE)
             if(proc.returncode != 0):
                 currentlyUpdating['updater'] = [500, "Error pulling from git"]
-                print("Failed")
+                print("Failed with git error")
                 remove('update')
                 return
             print('Pulled from git, restarting')
         except Exception as e:
             currentlyUpdating['updater'] = [500, "Unexpected error: " + e]
-            print("Failed")
+            print("Failed with unexpected error")
             remove('update')
             return
         exit() # systemctl will restart the updater
