@@ -37,7 +37,7 @@ def update_repo(name):
         print('Updating the updater')
         try:
             with open('update', 'w') as f:
-                f.write()
+                f.write('')
             proc = run(['git', 'pull'], cwd=path.join(path.dirname(path.realpath(__file__))), stdout=PIPE, stderr=PIPE)
             if(proc.returncode != 0):
                 currentlyUpdating['updater'] = [500, "Error pulling from git"]
@@ -46,7 +46,7 @@ def update_repo(name):
                 return
             print('Pulled from git, restarting')
         except Exception as e:
-            currentlyUpdating['updater'] = [500, "Unexpected error: " + e]
+            currentlyUpdating['updater'] = [500, "Unexpected error: " + str(e)]
             print("Failed with unexpected error")
             remove('update')
             return
