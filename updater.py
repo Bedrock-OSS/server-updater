@@ -77,8 +77,8 @@ def update_repo(name):
 def validate_data(data):
     startswith = startswitharr(data['id'], config["whitelisted"])
 
-    print(data['secret'])
-    print(startswith)
+    print('Supplied secret: ' + data['secret'])
+    print('Org supplied: ' + startswith)
     return data['secret'] == config['secret'] and data['id'] and startswith and (data['id'][len(startswith):].strip() == 'server-updater' or path.isdir(path.join('repos', data['id'][len(startswith):].strip())))
 
 def startswitharr(s, arr):
