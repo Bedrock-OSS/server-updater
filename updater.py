@@ -20,6 +20,8 @@ def handle_deploy_request():
         org = startswitharr(request.form['id'], config['whitelisted'])
         name = request.form['id'][len(org):].strip()
         if name in currentlyUpdating:
+            if(name == 'server-updater'):
+                print('Update updater confirmed!')
             ret = currentlyUpdating[name]
             if currentlyUpdating[name][0] in [500, 200]:
                 del currentlyUpdating[name]
