@@ -1,6 +1,6 @@
 import datetime
 from flask import Flask, request
-from os import path
+from os import path, remove
 from subprocess import PIPE, run
 import threading
 import json
@@ -36,12 +36,16 @@ def update_repo(name):
     if(name == 'updater'):
         print('Updating the updater')
         try:
+            with open('update', 'w') as f:
+                f.write()
             proc = run(['git', 'pull'], cwd=path.join(path.dirname(path.realpath(__file__))), stdout=PIPE, stderr=PIPE)
             if(proc.returncode != 0):
                 currentlyUpdating['updater'] = [500, "Error pulling from git"]
+                remove('update')
                 return
         except Exception as e:
             currentlyUpdating['updater'] = [500, "Unexpected error: " + e]
+            remove('update')
             return
         exit() # systemctl will restart the updater
 
@@ -82,3 +86,8 @@ def startswitharr(s, arr):
             return a + "/"
     return False
 
+try:
+    remove('update')
+    currentlyUpdating['updater'] = [200, "Success"]
+except OSError:
+    pass
