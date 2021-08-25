@@ -33,7 +33,7 @@ def handle_deploy_request():
         return "Invalid request", 500
 
 def update_repo(name):
-    if(name == 'updater'):
+    if(name == 'server-updater'):
         print('Updating the updater')
         try:
             with open('update', 'w') as f:
@@ -81,7 +81,7 @@ def validate_data(data):
     print(data['secret'])
     print(config['secret'])
     print(startswith)
-    return data['secret'] == config['secret'] and data['id'] and startswith and (data['id'][len(startswith):].strip() == 'updater' or path.isdir(path.join('repos', data['id'][len(startswith):].strip())))
+    return data['secret'] == config['secret'] and data['id'] and startswith and (data['id'][len(startswith):].strip() == 'server-updater' or path.isdir(path.join('repos', data['id'][len(startswith):].strip())))
 
 def startswitharr(s, arr):
     for a in arr:
