@@ -11,6 +11,6 @@ jobs:
           hostname: '45.33.198.89'
           path: '/deploy'
           port: 5000
-          queryInterval: 3000
+          queryInterval: 5000
           auth: ${{ secrets.DEPLOY_SECRET }}
-          timeout: 20
+          timeout: 30
