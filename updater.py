@@ -1,6 +1,6 @@
 import datetime
 from flask import Flask, request
-from os import path, remove
+from os import path, remove, _exit
 from subprocess import PIPE, run
 import threading
 import json
@@ -50,7 +50,7 @@ def update_repo(name):
             print("Failed with unexpected error", flush=True)
             remove('update')
             return
-        exit() # systemctl will restart the updater
+        _exit(1) # systemctl will restart the updater
 
     try:
         print('Running stop')
