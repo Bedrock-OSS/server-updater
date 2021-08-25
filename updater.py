@@ -81,7 +81,7 @@ def validate_data(data):
     print(data['secret'])
     print(config['secret'])
     print(startswith)
-    return data['secret'] == config['secret'] and data['id'] and startswith and path.isdir(path.join('repos', data['id'][len(startswith):].strip()))
+    return data['secret'] == config['secret'] and data['id'] and startswith and (data['id'][len(startswith):].strip() == 'updater' or path.isdir(path.join('repos', data['id'][len(startswith):].strip())))
 
 def startswitharr(s, arr):
     for a in arr:
