@@ -34,20 +34,20 @@ def handle_deploy_request():
 
 def update_repo(name):
     if(name == 'server-updater'):
-        print('Updating the updater')
+        print('Updating the updater', flush=True)
         try:
             with open('update', 'w') as f:
                 f.write('')
             proc = run(['git', 'pull'], cwd=path.join(path.dirname(path.realpath(__file__))), stdout=PIPE, stderr=PIPE)
             if(proc.returncode != 0):
                 currentlyUpdating['updater'] = [500, "Error pulling from git"]
-                print("Failed with git error")
+                print("Failed with git error", flush=True)
                 remove('update')
                 return
             print('Pulled from git, restarting')
         except Exception as e:
             currentlyUpdating['updater'] = [500, "Unexpected error: " + str(e)]
-            print("Failed with unexpected error")
+            print("Failed with unexpected error", flush=True)
             remove('update')
             return
         exit() # systemctl will restart the updater

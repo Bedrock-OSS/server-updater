@@ -13,4 +13,4 @@ jobs:
           port: 5000
           queryInterval: 1000
           auth: ${{ secrets.DEPLOY_SECRET }}
-          timeout: 1
+          timeout: 10
