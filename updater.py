@@ -33,6 +33,18 @@ def handle_deploy_request():
         return "Invalid request", 500
 
 def update_repo(name):
+    if(name == 'updater'):
+        print('Updating the updater')
+        try:
+            proc = run(['git', 'pull'], cwd=path.join(path.dirname(path.realpath(__file__))), stdout=PIPE, stderr=PIPE)
+            if(proc.returncode != 0):
+                currentlyUpdating['updater'] = [500, "Error pulling from git"]
+                return
+        except Exception as e:
+            currentlyUpdating['updater'] = [500, "Unexpected error: " + e]
+            return
+        exit() # systemctl will restart the updater
+
     try:
         print('Running stop')
         proc = run(['sudo', 'systemctl', 'stop', "bedrock-oss:" + name], stdout=PIPE, stderr=PIPE)
