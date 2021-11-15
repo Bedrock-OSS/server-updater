@@ -25,6 +25,8 @@ def handle_deploy_request():
             ret = currentlyUpdating[name]
             if currentlyUpdating[name][0] in [500, 200]:
                 del currentlyUpdating[name]
+            if ret[0] == 500:
+                ret[1] = ret[1] + config["500errormessage"]
             return ret[1], ret[0]
         currentlyUpdating[name] = [202, "Processing"]
         

@@ -1,0 +1,5 @@
+{
+    "secret": "secret",
+    "whitelisted": ["Github-org-that-should-be-able-to-have-repos"],
+    "500errormessage": "Error message to append to failed updates"
+}
