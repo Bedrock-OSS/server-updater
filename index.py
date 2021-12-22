@@ -13,4 +13,12 @@ def check_creds():
 
 app.route('/deploy', methods=['POST'])(actions.deploy)
 
-app.route('/status', methods=['GET'])(actions.status)
+app.route('/status', methods=['POST'])(actions.query_status)
+
+app.route('/set_status', methods=['POST'])(actions.set_status)
+
+app.route('/create', methods=['POST'])(actions.create)
+
+app.route('/delete', methods=['POST'])(actions.delete)
+
+app.route('/list', methods=['POST'])(actions.list)

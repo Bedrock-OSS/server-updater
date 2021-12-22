@@ -5,9 +5,9 @@ from flask import request
 from subprocess import PIPE, run
 import re
 
-def status():
+def query_status():
     if not validate_data(request.form): return "Bad request", 400
-    name = get_name_and_org(request.form['id'])
+    name, org = get_name_and_org(request.form['id'])
     if name in currentlyUpdating:
         return "Deploying", 200
     if name == 'server-updater':
@@ -17,7 +17,7 @@ def status():
     if('run_process' in data):
         running = get_systemctl_status(request.form["id"])
     elif('run_docker' in data):
-        running = get_docker_status(request.form["id"])
+        running = get_docker_status(org + '-' + name)
     return ("Running" if running else "Stopped"), 200
 
 def get_systemctl_status(name):
