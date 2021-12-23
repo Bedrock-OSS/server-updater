@@ -7,10 +7,13 @@ import re
 def query_status():
     if not validate_data(request.form): return "Bad request", 400
     name, org = get_name_and_org(request.form['id'])
+    return get_status(name, org), 200
+
+def get_status(name, org):
     if name in currentlyUpdating:
-        return "Deploying", 200
+        return "Deploying"
     if name == 'server-updater':
-        return "Running", 200
+        return "Running"
     data = get_process_config(name)
     # print(data)
     running = False
@@ -18,7 +21,7 @@ def query_status():
         running = get_systemctl_status(request.form["id"])
     elif('run_docker' in data):
         running = get_docker_status(org + '-' + name)
-    return ("Running" if running else "Stopped"), 200
+    return "Running" if running else "Stopped"
 
 def get_systemctl_status(name):
     proc = run(['systemctl', '--user', 'status', name], stdout=PIPE, stderr=PIPE)
