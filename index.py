@@ -1,6 +1,11 @@
 from flask import Flask, request
 # import the deploy file from the actions folder
-import actions
+import actions.deploy
+import actions.query_status
+import actions.set_status
+import actions.create
+import actions.delete
+import actions.list
 from actions.common import *
 
 app = Flask(__name__)
@@ -11,11 +16,11 @@ def check_creds():
         return None
     return "Invalid request", 500
 
-app.route('/deploy', methods=['POST'])(actions.deploy)
+app.route('/deploy', methods=['POST'])(actions.deploy.deploy)
 
-app.route('/status', methods=['POST'])(actions.query_status)
+app.route('/status', methods=['POST'])(actions.query_status.query_status)
 
-app.route('/set_status', methods=['POST'])(actions.set_status)
+app.route('/set_status', methods=['POST'])(actions.set_status.set_status)
 
 app.route('/create', methods=['POST'])(actions.create)
 
