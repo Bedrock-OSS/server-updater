@@ -1,12 +1,13 @@
-from actions.common import get_process_config
+from subprocess import run
+from actions.common import get_name_and_org, get_process_config
 from flask import request
 
 def set_status():
-    if not "name" in request.form and 'status' in request.form: return "Bad request", 400
-    name, status = request.form['name'], request.form['status']
-    if(name == 'server-updater'):
+    if not "id" in request.form and 'status' in request.form: return "Bad request", 400
+    id, status = request.form['id'], request.form['status']
+    if(id == 'bedrock-oss:server-updater'):
         return "The server updater cannot be stopped", 400
-    data = get_process_config(name)
+    name = get_name_and_org(id)
     if(status): return ("Started", 200) if start_project(name) else ("Project misconfigured", 500)
     else: return ("Stopped", 200) if stop_project(name) else ("Project misconfigured", 500)
 
