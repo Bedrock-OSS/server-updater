@@ -12,7 +12,7 @@ def startswitharr(s, arr):
 config = {}
 with open('config.json', 'r') as f:
     config = json.load(f)
-    config["whitelisted"].append("Bedrock-OSS")
+    config["whitelisted"].append("bedrock-oss")
 
 def get_process_config(id):
     with open(path.join('repos', id, 'server_config.json'), 'r') as f:
@@ -20,7 +20,7 @@ def get_process_config(id):
         return data
 
 def get_name_and_org(id):
-    org = startswitharr(id, config["whitelisted"])
+    org = startswitharr(id.lower(), config["whitelisted"])
     return id[len(org):].strip(), org
 
 def validate_data(data):
