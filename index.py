@@ -14,7 +14,7 @@ app = Flask(__name__)
 def check_creds():
     if(request.form["secret"] == config["secret"]):
         return None
-    return "Invalid request", 500
+    return "Invalid request", 400
 
 app.route('/deploy', methods=['POST'])(actions.deploy.deploy)
 

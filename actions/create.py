@@ -32,13 +32,16 @@ def create_systemctl_process(id, command, start):
     Restart=always
     RestartSec=1
     WorkingDirectory=/home/%s/oss/repos/%s
+
+    [Install]
+    WantedBy=multi-user.target
     """ % (id, command, os.getlogin(), id)
     if os.path.isfile('/home/%s/.config/systemd/user/bedrock-oss:' + id + '.service'):
         return False
     with open('/home/%s/.config/systemd/user/bedrock-oss:%s.service' % (os.getlogin(), id), 'w') as f:
         f.write(systemctl_file)
     run(['systemctl', '--user', 'daemon-reload'])
-    run(['systemctl', '--user', 'enable', 'bedrock-oss-' + id])
+    run(['systemctl', '--user', 'enable', 'bedrock-oss:' + id])
     if start:
         run(['systemctl', '--user', 'start', id])
     return True
