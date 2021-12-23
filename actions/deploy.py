@@ -66,7 +66,7 @@ def update_running_docker(name):
         
 def update_git(name):
     print('Running pull')
-    proc = run(['git', 'pull'], cwd=path.join(path.dirname(path.realpath(__file__)), 'repos', name), stdout=PIPE, stderr=PIPE)
+    proc = run(['git', 'pull'], cwd=path.join('repos', name), stdout=PIPE, stderr=PIPE)
     if(proc.returncode != 0):
         currentlyUpdating[name] = [500, "Error pulling from git"]
         return False

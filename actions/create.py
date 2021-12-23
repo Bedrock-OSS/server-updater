@@ -22,19 +22,19 @@ def create():
 
 def create_systemctl_process(id, command, start):
     systemctl_file = """
-    [Unit]
-    Description=Runner for %s
-    After=network.target
+[Unit]
+Description=Runner for %s
+After=network.target
 
-    [Service]
-    Type=simple
-    ExecStart=%s
-    Restart=always
-    RestartSec=1
-    WorkingDirectory=/home/%s/oss/repos/%s
+[Service]
+Type=simple
+ExecStart=%s
+Restart=always
+RestartSec=1
+WorkingDirectory=/home/%s/oss/repos/%s
 
-    [Install]
-    WantedBy=multi-user.target
+[Install]
+WantedBy=multi-user.target
     """ % (id, command, os.getlogin(), id)
     if os.path.isfile('/home/%s/.config/systemd/user/bedrock-oss:' + id + '.service'):
         return False

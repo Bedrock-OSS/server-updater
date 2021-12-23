@@ -12,7 +12,7 @@ def query_status():
 def get_status(name, org):
     if name in currentlyUpdating and currentlyUpdating[name][0] is not 200:
         text = currentlyUpdating[name][1]
-        del currentlyUpdating[name]
+        if currentlyUpdating[name][0] is not 202: del currentlyUpdating[name]
         return text
     if name == 'server-updater':
         return "Running"
