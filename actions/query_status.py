@@ -12,6 +12,7 @@ def query_status():
     if name == 'server-updater':
         return "Running", 200
     data = get_process_config(name)
+    # print(data)
     running = False
     if('run_process' in data):
         running = get_systemctl_status(request.form["id"])
@@ -20,7 +21,7 @@ def query_status():
     return ("Running" if running else "Stopped"), 200
 
 def get_systemctl_status(name):
-    proc = run(['systemctl', 'status', name], stdout=PIPE, stderr=PIPE)
+    proc = run(['systemctl', '--user', 'status', name], stdout=PIPE, stderr=PIPE)
     if(proc.returncode == 0):
         return True
     else:

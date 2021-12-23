@@ -8,16 +8,17 @@ def set_status():
     if(id == 'bedrock-oss:server-updater'):
         return "The server updater cannot be stopped", 400
     name, org = get_name_and_org(id)
-    if(status):
+    if status.lower() == "start":
         if start_project(name):
             return "Started", 200
         else:
             return "Project misconfigured", 500
-    else: 
+    elif status.lower() == 'stop': 
         if stop_project(name):
             return "Stopped", 200
         else:
             return "Project misconfigured", 500
+    else: return "Bad request", 400
 
 def start_project(name):
     data = get_process_config(name)
