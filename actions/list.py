@@ -1,6 +1,6 @@
 import json
 import os
-from common import get_process_config
+from actions.common import get_process_config
 def list():
     # Create a list of all items in the repos folder
     items = []

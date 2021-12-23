@@ -1,7 +1,6 @@
 from actions.common import get_name_and_org
-from actions.status import get_systemctl_status
-from status import get_docker_status
-from common import startswitharr, currentlyUpdating, config, get_process_config
+from actions.query_status import get_systemctl_status, get_docker_status
+from actions.common import startswitharr, currentlyUpdating, config, get_process_config
 from flask import request
 from subprocess import PIPE, run
 from os import path, remove, _exit
