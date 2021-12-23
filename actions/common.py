@@ -6,7 +6,7 @@ def startswitharr(s, arr):
     if(type(arr) is not list):
         return False
     for a in arr:
-        if s.startswith(a + "/"):
+        if s.lower().startswith(a + "/"):
             return a + "/"
     return False
 config = {}
