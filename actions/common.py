@@ -6,8 +6,8 @@ def startswitharr(s, arr):
     if(type(arr) is not list):
         return False
     for a in arr:
-        if s.lower().startswith(a + "/"):
-            return a + "/"
+        if s.lower().startswith(a + ":"):
+            return a + ":"
     return False
 config = {}
 with open('config.json', 'r') as f:
