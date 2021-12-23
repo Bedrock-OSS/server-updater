@@ -10,7 +10,7 @@ import json
 
 def deploy():
     if validate_data(request.form):
-        name = get_name_and_org(request.form['id'])
+        name, org = get_name_and_org(request.form['id'])
         if name in currentlyUpdating:
             return "Already deploying " + name, 202
         if(name == 'server-updater'):

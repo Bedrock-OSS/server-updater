@@ -7,7 +7,7 @@ def set_status():
     id, status = request.form['id'], request.form['status']
     if(id == 'bedrock-oss:server-updater'):
         return "The server updater cannot be stopped", 400
-    name = get_name_and_org(id)
+    name, org = get_name_and_org(id)
     if(status):
         if start_project(name):
             return "Started", 200
