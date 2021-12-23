@@ -1,6 +1,6 @@
 from actions.common import get_name_and_org
 from actions.query_status import get_systemctl_status, get_docker_status
-from actions.common import startswitharr, currentlyUpdating, config, get_process_config
+from actions.common import currentlyUpdating, get_process_config, validate_data
 from flask import request
 from subprocess import PIPE, run
 from os import path, remove, _exit
@@ -33,13 +33,6 @@ def check_docker(name):
 
 def check_process(name):
     return 'run_process' in get_process_config(name)
-
-def validate_data(data):
-    startswith = startswitharr(data['id'], config["whitelisted"])
-
-    # print('Supplied secret: ' + data['secret'])
-    # print('Org supplied: ' + startswith)
-    return data['id'] and startswith and (data['id'][len(startswith):].strip() == 'server-updater' or path.isdir(path.join('repos', data['id'][len(startswith):].strip())))
 
 def update_running_docker(name):    
     try:

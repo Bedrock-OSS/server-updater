@@ -1,6 +1,5 @@
 from actions.common import get_name_and_org
-from actions.deploy import validate_data
-from actions.common import get_process_config, currentlyUpdating
+from actions.common import get_process_config, currentlyUpdating, validate_data
 from flask import request
 from subprocess import PIPE, run
 import re

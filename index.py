@@ -1,12 +1,12 @@
 from flask import Flask, request
 # import the deploy file from the actions folder
+from actions.common import *
 import actions.deploy
 import actions.query_status
 import actions.set_status
 import actions.create
 import actions.delete
 import actions.list
-from actions.common import *
 
 app = Flask(__name__)
 

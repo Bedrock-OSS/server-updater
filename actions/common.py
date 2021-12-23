@@ -22,3 +22,7 @@ def get_process_config(id):
 def get_name_and_org(id):
     org = startswitharr(id, config["whitelisted"])
     return id[len(org):].strip(), org
+
+def validate_data(data):
+    startswith = startswitharr(data['id'], config["whitelisted"])
+    return data['id'] and startswith and (data['id'][len(startswith):].strip() == 'server-updater' or path.isdir(path.join('repos', data['id'][len(startswith):].strip())))
