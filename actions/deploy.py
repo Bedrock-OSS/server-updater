@@ -1,6 +1,7 @@
 from actions.common import get_name_and_org
 from actions.query_status import get_systemctl_status, get_docker_status
 from actions.common import currentlyUpdating, get_process_config, validate_data
+from actions.set_status import start_project, stop_project
 from flask import request
 from subprocess import PIPE, run
 from os import path, remove, _exit
@@ -16,7 +17,6 @@ def deploy():
         if(name == 'server-updater'):
             # Probably shouldn't be a thread
             threading.Thread(target=update_running_process, args=(name,)).start()
-            return "Deploying", 202
         elif(check_process(name)):
             currentlyUpdating[name] = [202, "Processing"]
             threading.Thread(target=update_running_process, args=(name,)).start()
@@ -97,18 +97,11 @@ def update_running_process(name):
         status = get_systemctl_status('bedrock-oss-' + name)
         if(status):
             print('Running stop')
-            proc = run(['sudo', 'systemctl', 'stop', "bedrock-oss:" + name], stdout=PIPE, stderr=PIPE)
-            if(proc.returncode != 0):
-                currentlyUpdating[name] = [500, "Error stopping process"]
-                return
-
+            stop_project(name)
         update_git(name)
         if(status):
             print('Running start')
-            proc = run(['sudo', 'systemctl', 'start', "bedrock-oss:" + name], stdout=PIPE, stderr=PIPE)
-            if(proc.returncode != 0):
-                currentlyUpdating[name] = [500, "Error starting process"]
-                return
+            start_project(name)
         currentlyUpdating[name] = [200, "Success"]
         print(name + " updated at " + str(datetime.datetime.now()))
     except Exception as e:

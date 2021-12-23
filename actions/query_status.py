@@ -10,8 +10,10 @@ def query_status():
     return get_status(name, org), 200
 
 def get_status(name, org):
-    if name in currentlyUpdating:
-        return "Deploying"
+    if name in currentlyUpdating and currentlyUpdating[name][0] is not 200:
+        text = currentlyUpdating[name][1]
+        del currentlyUpdating[name]
+        return text
     if name == 'server-updater':
         return "Running"
     data = get_process_config(name)
