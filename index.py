@@ -22,8 +22,8 @@ app.route('/status', methods=['POST'])(actions.query_status.query_status)
 
 app.route('/set_status', methods=['POST'])(actions.set_status.set_status)
 
-app.route('/create', methods=['POST'])(actions.create)
+app.route('/create', methods=['POST'])(actions.create.create)
 
-app.route('/delete', methods=['POST'])(actions.delete)
+app.route('/delete', methods=['POST'])(actions.delete.delete)
 
-app.route('/list', methods=['POST'])(actions.list)
+app.route('/list', methods=['POST'])(actions.list.list)
