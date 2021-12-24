@@ -59,4 +59,4 @@ def create_docker_process(id, dockerfile, start):
 def setup_host(name):
     data = get_process_config(name)
     if 'host_dir' in data:
-        os.symlink(data['host_dir'], '/var/www/html/projects/%s' % name)
+        os.symlink('/home/%s/oss/repos/%s/%s' % (os.getlogin(), name, data['host_dir']), '/var/www/html/projects/%s' % name)
