@@ -1,4 +1,5 @@
 from actions.common import get_name_and_org
+from actions.create import create_docker_process, create_systemctl_process, setup_host
 from actions.query_status import get_systemctl_status, get_docker_status
 from actions.common import currentlyUpdating, get_process_config, validate_data
 from actions.set_status import start_project, stop_project
@@ -36,6 +37,7 @@ def check_process(name):
 
 def update_running_docker(name):    
     try:
+        remove('/var/www/html/projects/' + name)
         # get the docker status of the container
         status = get_docker_status('bedrock-oss-' + name)
         if(status):
@@ -53,11 +55,12 @@ def update_running_docker(name):
         if(proc.returncode != 0):
             currentlyUpdating[name] = [500, "Error building container"]
             return
-        if(status):
-            proc = run(['docker', 'run', '-d', '--name', 'bedrock-oss-' + name, 'bedrock-oss-' + name], cwd=path.join(path.dirname(path.realpath(__file__)), 'repos', name), stdout=PIPE, stderr=PIPE)
-            if(proc.returncode != 0):
-                currentlyUpdating[name] = [500, "Error running container"]
-                return
+        data = get_process_config(name)
+        if 'run_process' in data:
+            create_systemctl_process(name, data['run_process'], status)
+        elif 'run_docker' in data:
+            create_docker_process(name, data['run_docker'], True)
+        setup_host(name)
     except Exception as e:
         print(e)
         currentlyUpdating[name] = [500, "Error: " + str(e)]
@@ -94,14 +97,18 @@ def update_running_process(name):
         _exit(1) # systemctl will restart the updater
 
     try:
+        remove('/var/www/html/projects/' + name)
         status = get_systemctl_status('bedrock-oss-' + name)
         if(status):
             print('Running stop')
             stop_project(name)
         update_git(name)
-        if(status):
-            print('Running start')
-            start_project(name)
+        data = get_process_config(name)
+        if 'run_process' in data:
+            create_systemctl_process(name, data['run_process'], status)
+        elif 'run_docker' in data:
+            create_docker_process(name, data['run_docker'], True)
+        setup_host(name)
         currentlyUpdating[name] = [200, "Success"]
         print(name + " updated at " + str(datetime.datetime.now()))
     except Exception as e:

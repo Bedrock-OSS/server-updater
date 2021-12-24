@@ -17,6 +17,7 @@ def create():
         create_systemctl_process(name, data['run_process'], False)
     elif 'run_docker' in data:
         create_docker_process(name, data['run_docker'], False)
+    setup_host(name)
     return 'Ok', 200
 
 
@@ -54,3 +55,8 @@ def create_docker_process(id, dockerfile, start):
     if start:
         run(['docker', 'run', '-d', '--name', 'bedrock-oss-' + id, ' bedrock-oss-' + id])
     return True
+
+def setup_host(name):
+    data = get_process_config(name)
+    if 'host_dir' in data:
+        os.symlink(data['host_dir'], '/var/www/html/projects/%s' % name)
