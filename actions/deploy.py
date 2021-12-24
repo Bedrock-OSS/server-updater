@@ -24,7 +24,18 @@ def deploy():
         elif(check_docker(name)):
             currentlyUpdating[name] = [202, "Processing"]
             threading.Thread(target=update_running_docker, args=(name,)).start()
-
+        else:
+            currentlyUpdating[name] = [202, "Processing"]
+            def t():
+                update_git(name)
+                data = get_process_config(name)
+                if 'run_process' in data:
+                    create_systemctl_process(name, data['run_process'], False)
+                elif 'run_docker' in data:
+                    create_docker_process(name, data['run_docker'], False)
+                setup_host(name)
+                currentlyUpdating[name] = [200, "Success"]
+            threading.Thread(target=t).start()
         return "Deploying", 202
     else:
         return "Bad request", 400
