@@ -10,9 +10,9 @@ def query_status():
     return get_status(name, org), 200
 
 def get_status(name, org):
-    if name in currentlyUpdating and currentlyUpdating[name][0] is not 200:
+    if name in currentlyUpdating and currentlyUpdating[name][0] != 200:
         text = currentlyUpdating[name][1]
-        if currentlyUpdating[name][0] is not 202: del currentlyUpdating[name]
+        if currentlyUpdating[name][0] != 202: del currentlyUpdating[name]
         return text
     if name == 'server-updater':
         return "Running"
@@ -20,7 +20,7 @@ def get_status(name, org):
     # print(data)
     running = False
     if('run_process' in data):
-        running = get_systemctl_status(request.form["id"])
+        running = get_systemctl_status(org + ':' + name)
     elif('run_docker' in data):
         running = get_docker_status(org + '-' + name)
     return "Running" if running else "Stopped"
