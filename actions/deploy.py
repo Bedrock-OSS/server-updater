@@ -48,8 +48,10 @@ def check_process(name):
 
 def update_running_docker(name):    
     try:
-        remove('/var/www/html/projects/' + name)
-        # get the docker status of the container
+        try:
+            remove('/var/www/html/projects/' + name)
+        except OSError:
+            pass        # get the docker status of the container
         status = get_docker_status('bedrock-oss-' + name)
         if(status):
             print('Stopping container')
@@ -108,7 +110,10 @@ def update_running_process(name):
         _exit(1) # systemctl will restart the updater
 
     try:
-        remove('/var/www/html/projects/' + name)
+        try:
+            remove('/var/www/html/projects/' + name)
+        except OSError:
+            pass
         status = get_systemctl_status('bedrock-oss-' + name)
         if(status):
             print('Running stop')
