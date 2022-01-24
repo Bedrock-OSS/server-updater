@@ -114,7 +114,7 @@ def update_running_process(name):
             remove('/var/www/html/projects/' + name)
         except OSError:
             pass
-        status = get_systemctl_status('bedrock-oss-' + name)
+        status = get_systemctl_status('bedrock-oss:' + name)
         if(status):
             print('Running stop')
             stop_project(name)
