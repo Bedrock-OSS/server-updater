@@ -74,8 +74,6 @@ def update_running_docker(name):
         elif 'run_docker' in data:
             create_docker_process(name, data['run_docker'], True)
         setup_host(name)
-        if(status):
-            start_project(name)
     except Exception as e:
         print(e)
         currentlyUpdating[name] = [500, "Error: " + str(e)]
@@ -127,8 +125,6 @@ def update_running_process(name):
         elif 'run_docker' in data:
             create_docker_process(name, data['run_docker'], True)
         setup_host(name)
-        if(status):
-            start_project(name)
         currentlyUpdating[name] = [200, "Success"]
         print(name + " updated at " + str(datetime.datetime.now()))
     except Exception as e:

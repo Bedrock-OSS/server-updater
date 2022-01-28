@@ -44,7 +44,7 @@ WantedBy=multi-user.target
     run(['systemctl', '--user', 'daemon-reload'])
     run(['systemctl', '--user', 'enable', 'bedrock-oss:' + id])
     if start:
-        run(['systemctl', '--user', 'start', id])
+        run(['systemctl', '--user', 'start', 'bedrock-oss:' + id])
     return True
     
 def create_docker_process(id, dockerfile, start):
