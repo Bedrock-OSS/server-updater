@@ -20,12 +20,24 @@ def deploy():
             threading.Thread(target=update_running_process, args=(name,)).start()
         elif(check_process(name)):
             currentlyUpdating[name] = [202, "Processing"]
+            try:
+                remove('/var/www/html/projects/' + name)
+            except OSError:
+                pass
             threading.Thread(target=update_running_process, args=(name,)).start()
         elif(check_docker(name)):
             currentlyUpdating[name] = [202, "Processing"]
+            try:
+                remove('/var/www/html/projects/' + name)
+            except OSError:
+                pass
             threading.Thread(target=update_running_docker, args=(name,)).start()
         else:
             currentlyUpdating[name] = [202, "Processing"]
+            try:
+                remove('/var/www/html/projects/' + name)
+            except OSError:
+                pass
             def t():
                 update_git(name)
                 data = get_process_config(name)
@@ -34,7 +46,7 @@ def deploy():
                 elif 'run_docker' in data:
                     create_docker_process(name, data['run_docker'], False)
                 setup_host(name)
-                currentlyUpdating[name] = [200, "Success"]
+                currentlyUpdating[name] = [200, "Running"]
             threading.Thread(target=t).start()
         return "Deploying", 202
     else:
@@ -48,10 +60,6 @@ def check_process(name):
 
 def update_running_docker(name):    
     try:
-        try:
-            remove('/var/www/html/projects/' + name)
-        except OSError:
-            pass        # get the docker status of the container
         status = get_docker_status('bedrock-oss-' + name)
         if(status):
             print('Stopping container')
@@ -78,7 +86,7 @@ def update_running_docker(name):
         print(e)
         currentlyUpdating[name] = [500, "Error: " + str(e)]
         return
-    currentlyUpdating[name] = [200, "Success"]
+    currentlyUpdating[name] = [200, "Running"]
         
 def update_git(name):
     print('Running pull')
@@ -110,10 +118,6 @@ def update_running_process(name):
         _exit(1) # systemctl will restart the updater
 
     try:
-        try:
-            remove('/var/www/html/projects/' + name)
-        except OSError:
-            pass
         status = get_systemctl_status('bedrock-oss:' + name)
         if(status):
             print('Running stop')
@@ -139,7 +143,7 @@ def update_running_process(name):
                 return
             time.sleep(1)
         setup_host(name)
-        currentlyUpdating[name] = [200, "Success"]
+        currentlyUpdating[name] = [200, "Running"]
         print(name + " updated at " + str(datetime.datetime.now()))
     except Exception as e:
         currentlyUpdating[name] = [500, "Unexpected error: " + str(e)]
