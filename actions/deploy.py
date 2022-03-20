@@ -8,7 +8,7 @@ from subprocess import PIPE, run
 from os import path, remove, _exit
 import datetime
 import threading
-import json
+import time
 
 def deploy():
     if validate_data(request.form):
@@ -120,10 +120,24 @@ def update_running_process(name):
             stop_project(name)
         update_git(name)
         data = get_process_config(name)
+        hasProcess = True
         if 'run_process' in data:
             create_systemctl_process(name, data['run_process'], status)
         elif 'run_docker' in data:
             create_docker_process(name, data['run_docker'], True)
+        else:
+            hasProcess = False
+        i = 0
+        while hasProcess:
+            if(get_systemctl_status('bedrock-oss:' + name)):
+                break
+            print('Waiting for process to start')
+            i += 1
+            if(i > 10):
+                currentlyUpdating[name] = [500, "Error starting process"]
+                print(name + " failed to start")
+                return
+            time.sleep(1)
         setup_host(name)
         currentlyUpdating[name] = [200, "Success"]
         print(name + " updated at " + str(datetime.datetime.now()))

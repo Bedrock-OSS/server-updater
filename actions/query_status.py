@@ -10,7 +10,7 @@ def query_status():
     return get_status(name, org), 200
 
 def get_status(name, org):
-    if name in currentlyUpdating and currentlyUpdating[name][0] != 200:
+    if name in currentlyUpdating:
         text = currentlyUpdating[name][1]
         if currentlyUpdating[name][0] != 202: del currentlyUpdating[name]
         return text
