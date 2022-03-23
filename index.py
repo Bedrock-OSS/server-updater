@@ -27,3 +27,5 @@ app.route('/create', methods=['POST'])(actions.create.create)
 app.route('/delete', methods=['POST'])(actions.delete.delete)
 
 app.route('/list', methods=['POST'])(actions.list.list)
+
+app.route('/restart', methods=['POST'])(actions.restart.restart)
