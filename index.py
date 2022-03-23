@@ -7,6 +7,7 @@ import actions.set_status
 import actions.create
 import actions.delete
 import actions.list
+import actions.restart
 
 app = Flask(__name__)
 
