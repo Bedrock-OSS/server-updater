@@ -12,7 +12,7 @@ def list():
                 "item": item,
                 "config": get_process_config(item),
                 "status": get_status(item, 'bedrock-oss'),
-                "last-commit-time": check_output(["git", "show", "-s", "--format=%ct", "HEAD"], cwd='/home/ubuntu/oss/repos/' + item),
-                "last-commit-hash": check_output(["git", "rev-parse", "HEAD"], cwd='/home/ubuntu/oss/repos/' + item)
+                "last-commit-time": check_output(["git", "show", "-s", "--format=%ct", "HEAD"], cwd='/home/ubuntu/oss/repos/' + item).decode('utf-8'),
+                "last-commit-hash": check_output(["git", "rev-parse", "HEAD"], cwd='/home/ubuntu/oss/repos/' + item).decode('utf-8')
             })
     return json.dumps(items), 200
