@@ -1,5 +1,6 @@
 import json
 import os
+from subprocess import check_output
 from actions.common import get_process_config
 from actions.query_status import get_status
 def list():
@@ -10,6 +11,8 @@ def list():
             items.append({
                 "item": item,
                 "config": get_process_config(item),
-                "status": get_status(item, 'bedrock-oss')
+                "status": get_status(item, 'bedrock-oss'),
+                "last-commit-time": check_output(["git", "show", "-s", "--format=%ct", "HEAD"], cwd='/home/ubuntu/oss/repos/' + item),
+                "last-commit-hash": check_output(["git", "rev-parse", "HEAD"], cwd='/home/ubuntu/oss/repos/' + item)
             })
     return json.dumps(items), 200
